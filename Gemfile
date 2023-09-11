@@ -90,3 +90,7 @@ end
 gem "bootstrap"
 gem "font-awesome-sass"
 gem "jquery-rails"
+
+gem "active_storage_validations"
+gem "image_processing"
+gem "mini_magick"

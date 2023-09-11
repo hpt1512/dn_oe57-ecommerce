@@ -1,65 +1,17 @@
- <div class="grid">
-      <h1 class="text-uppercase"><%= t("categories") %></h1>
-      <div class="grid__row justify-content-center">
-        <ul class="nav">
-          <li class="nav-item home_cate_item">
-            <a class="nav-link text-uppercase activated" href="#"><%= t("male") %></a>
-          </li>
-          <li class="nav-item home_cate_item">
-            <a class="nav-link text-uppercase" href="#"><%= t("female") %></a>
-          </li>
-        </ul>
-      </div>
-      <div class="grid__row">
-        <div class="grid__column-1-5">
-          <div class="category-item">
-            <div class="category-item-1">
-              <%= image_tag("category-item/thoi-trang-nam.png", :alt => "Categoty item", :class => "category-item-img") %>
-              <div class="category-item-info">
-                <span class="category-item-info-name">Quần âu</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="grid__column-1-5">
-            <div class="category-item">
-                <div class="category-item-1">
-                    <%= image_tag("category-item/thoi-trang-nam.png", :alt => "Categoty item", :class => "category-item-img") %>
-                    <div class="category-item-info">
-                        <span class="category-item-info-name">Áo Polo</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="grid__column-1-5">
-            <div class="category-item">
-                <div class="category-item-1">
-                    <%= image_tag("category-item/thoi-trang-nam.png", :alt => "Categoty item", :class => "category-item-img") %>
-                    <div class="category-item-info">
-                        <span class="category-item-info-name">Áo sơ mi</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="grid__column-1-5">
-            <div class="category-item">
-                <div class="category-item-1">
-                    <%= image_tag("category-item/thoi-trang-nam.png", :alt => "Categoty item", :class => "category-item-img") %>
-                    <div class="category-item-info">
-                        <span class="category-item-info-name">Áo T-Shirt</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="grid__column-1-5">
-            <div class="category-item">
-                <div class="category-item-1">
-                    <%= image_tag("category-item/thoi-trang-nam.png", :alt => "Categoty item", :class => "category-item-img") %>
-                    <div class="category-item-info">
-                        <span class="category-item-info-name">Áo ba lỗ</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-      </div>
-    </div>
+<h1 class="text-uppercase fw-bold"><%= t("categories") %></h1>
+<ul class="categories_nav">
+  <ul class="categories_nav-item-1"><%= t("male") %>
+    <li class="categories_nav-item-2">Ao so mi</li>
+    <li class="categories_nav-item-2">Ao ba lo</li>
+    <li class="categories_nav-item-2">Ao T-Shirt</li>
+    <li class="categories_nav-item-2">Quan au</li>
+    <li class="categories_nav-item-2">Ao polo</li>
+  </ul>
+  <ul class="categories_nav-item-1"><%= t("female") %>
+    <li class="categories_nav-item-2">Ao so mi</li>
+    <li class="categories_nav-item-2">Chan vay</li>
+    <li class="categories_nav-item-2">Ao T-Shirt</li>
+    <li class="categories_nav-item-2">Quan Jean</li>
+    <li class="categories_nav-item-2">Ao polo</li>
+  </ul>
+</ul>

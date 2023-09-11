@@ -1,0 +1,20 @@
+<style>
+    form {
+        display: inline-grid;
+    }
+</style>
+<%= form_for @product do |f| %>
+  <%= f.label :name %><%= f.text_field :name %>
+  <%= f.label :price %><%= f.text_field :price %>
+  <%= f.label :description %><%= f.text_field :description %>
+  <%= f.label :quantity %><%= f.text_field :quantity %>
+  <%= f.label :rating %><%= f.text_field :rating %>
+  <%= f.label :category_id %><%= f.text_field :category_id %>
+ 
+<span class="image">
+    <%= f.file_field :image, accept: "image/jpeg, image/gif, image/png" %>
+  </span>
+
+  <%= f.submit yield("Create"), value: "Create", class: "btn btn-primary" %>
+  <%= @user_error %>
+<% end %>
