@@ -11,5 +11,8 @@ class Order < ApplicationRecord
   validates :reciver_phone, presence: true,
     format: {with: Settings.orders.regex}
 
+  delegate :name, to: :user, prefix: true
+
   scope :newest, ->{order created_at: :desc}
+
 end

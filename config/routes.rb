@@ -23,6 +23,7 @@ Rails.application.routes.draw do
     resources :orders, only: :index do
       patch "confirm", to: "orders#confirm"
       patch "cancel", to: "orders#cancel"
+      get "reason", to: "orders#reason"
     end
   end
 end

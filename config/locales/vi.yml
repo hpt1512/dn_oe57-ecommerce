@@ -1,6 +1,6 @@
 vi:
   sign_up: "Đăng ký"
-  hello: "Xin chao"
+  hello: "Xin chào"
   categories: "Danh mục"
   products: "Sản phẩm"
   about_us: "Giới thiệu"
@@ -73,3 +73,6 @@ vi:
   orders_management: "Quản lý đơn hàng"
   status: "Trạng thái"
   not_admin: "Bạn không phải là Admin"
+  delivery_information: "Thông tin giao hàng"
+  cancel_order_confirmation: "Xác nhận hủy đơn hàng"
+  reason_order_cancellation: "Lý do hủy đơn hàng"
