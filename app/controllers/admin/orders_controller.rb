@@ -10,16 +10,24 @@ class Admin::OrdersController < ApplicationController
     if @order.update(status: "confirmed")
       UserMailer.confirm_order(@order).deliver_now
       redirect_to admin_orders_path, notice: t("order_has_been_confirmed")
+    else
+      flash[:notice] = t("error")
+      render "admin/orders/index", status: :unprocessable_entity
     end
   end
 
   def reason; end
 
   def cancel
-    if @order.update(status: "canceled")
+    ActiveRecord::Base.transaction do
+      @order.update(status: "canceled")
+      return_quantity_products @order
       UserMailer.cancel_order(@order, params[:reason]).deliver_now
       redirect_to admin_orders_path, notice: t("order_has_been_cancelled")
     end
+    rescue ActiveRecord::RecordInvalid
+      flash[:notice] = t("error")
+      render "admin/orders/index", status: :unprocessable_entity
   end
 
   private
@@ -36,5 +44,14 @@ class Admin::OrdersController < ApplicationController
 
     flash[:danger] = t("order_not_found")
     redirect_to root_url
+  end
+
+  def return_quantity_products order
+    @order_details = order.order_details
+
+    @order_details.each do |order_detail|
+      order_detail.product.quantity += order_detail.quantity_product
+      order_detail.product.save!
+    end
   end
 end

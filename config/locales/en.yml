@@ -70,3 +70,5 @@ en:
   delivery_information: "Delivery information"
   cancel_order_confirmation: "Cancel order confirmation"
   reason_order_cancellation: "Reason for order cancellation"
+  add_to_cart_noti: "Product added to cart! Click here to view shopping cart."
+  product_already_in_the_cart: "Products already in the cart"

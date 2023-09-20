@@ -4,9 +4,10 @@ class OrdersController < ApplicationController
   before_action :logged_in_user
   before_action :load_product_in_cart, :total_price, only: :create
   before_action :load_order, only: :show
+  before_action :correct_user, only: :cancel
 
   def index
-    @orders = current_user.orders.includes(:order_details)
+    @orders = current_user.orders.includes(:order_details).newest
   end
 
   def show; end
@@ -25,6 +26,19 @@ class OrdersController < ApplicationController
     flash[:notice] = t("error")
     render "cart/index", status: :unprocessable_entity
   end
+
+  def cancel
+    ActiveRecord::Base.transaction do
+      order = Order.find_by id: params[:order_id]
+      order.update(status: "canceled")
+      return_quantity_products order
+      redirect_to orders_path, notice: t("order_has_been_cancelled")
+    end
+    rescue ActiveRecord::RecordInvalid
+      flash[:notice] = t("error")
+      render "orders/index", status: :unprocessable_entity
+  end
+
 
   private
 
@@ -82,5 +96,22 @@ class OrdersController < ApplicationController
       product.quantity = product.quantity - session[:cart][product.id.to_s]
     end
     @products.each(&:save!)
+  end
+
+  def return_quantity_products order
+    @order_details = order.order_details
+
+    @order_details.each do |order_detail|
+      order_detail.product.quantity += order_detail.quantity_product
+      order_detail.product.save!
+    end
+  end
+
+  def correct_user
+    @order = current_user.orders.find_by id: params[:order_id]
+    return if @order
+
+    flash[:danger] = t("order_invalid")
+    redirect_to request.referer || root_url
   end
 end
