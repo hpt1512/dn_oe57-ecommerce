@@ -1,6 +1,7 @@
 en:
   sign_up: "Sign up"
   hello: "Hello world"
+  hello: "Xin chào"
   categories: "Categories"
   products: "Products"
   about_us: "About us"
@@ -64,3 +65,6 @@ en:
   order_management: "Order management"
   status: "Status"
   not_admin: "You are not Admin"
+  delivery_information: "Delivery information"
+  cancel_order_confirmation: "Cancel order confirmation"
+  reason_order_cancellation: "Reason for order cancellation"

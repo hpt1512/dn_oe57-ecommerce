@@ -1,21 +1,39 @@
 class Admin::OrdersController < ApplicationController
   before_action :is_admin?
-  before_action :load_order, only: %i(confirm cancel)
+  before_action :load_order, only: %i(confirm cancel reason)
+  before_action :check_status, only: %i(confirm cancel)
 
   def index
     @pagy, @orders = pagy(Order.newest, items: Settings.orders.number_of_page_5)
   end
 
   def confirm
-    return unless @order.update(status: "confirmed")
-
-    redirect_to admin_orders_path, notice: t("order_has_been_confirmed")
+    if @order.update(status: :confirmed)
+      UserMailer.confirm_order(@order).deliver_now
+      redirect_to admin_orders_path, notice: t("order_has_been_confirmed")
+    else
+      flash[:notice] = t("error")
+      render "admin/orders/index", status: :unprocessable_entity
+    end
   end
 
-  def cancel
-    return unless @order.update(status: "canceled")
+  def reason; end
 
-    redirect_to admin_orders_path, notice: t("order_has_been_cancelled")
+  def cancel
+    ActiveRecord::Base.transaction do
+      if params[:reason].present?
+        @order.update(status: :canceled)
+        return_quantity_products @order
+        UserMailer.cancel_order(@order, params[:reason]).deliver_now
+        redirect_to admin_orders_path, notice: t("order_has_been_cancelled")
+      else
+        flash[:danger] = t("enter_reason")
+        render "admin/orders/reason", status: :unprocessable_entity
+      end
+    end
+  rescue ActiveRecord::RecordInvalid
+    flash[:notice] = t("error")
+    render "admin/orders/index", status: :unprocessable_entity
   end
 
   private
@@ -32,5 +50,12 @@ class Admin::OrdersController < ApplicationController
 
     flash[:danger] = t("order_not_found")
     redirect_to root_url
+  end
+
+  def check_status
+    return if @order.awaiting?
+
+    flash[:danger] = t("can_not_update_order")
+    redirect_to admin_orders_path
   end
 end
