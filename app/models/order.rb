@@ -10,4 +10,6 @@ class Order < ApplicationRecord
     length: {maximum: Settings.orders.length_50}
   validates :reciver_phone, presence: true,
     format: {with: Settings.orders.regex}
+
+  scope :newest, ->{order created_at: :desc}
 end

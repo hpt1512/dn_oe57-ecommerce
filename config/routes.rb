@@ -18,4 +18,11 @@ Rails.application.routes.draw do
   resources :orders
 
   resources :feedbacks
+
+  namespace :admin do
+    resources :orders, only: :index do
+      patch "confirm", to: "orders#confirm"
+      patch "cancel", to: "orders#cancel"
+    end
+  end
 end

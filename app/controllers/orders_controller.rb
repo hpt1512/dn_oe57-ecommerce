@@ -27,6 +27,11 @@ class OrdersController < ApplicationController
   end
 
   private
+
+  def clear_cart
+    session[:cart].clear
+  end
+
   def order_params
     params.require(:order).permit :reciver_name,
                                   :reciver_address,

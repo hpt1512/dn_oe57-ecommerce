@@ -1,0 +1,66 @@
+<section class="h-100 h-custom" style="background-color: #d2c9ff;">
+  <div class="container py-5 h-100 cart__container">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12">
+        <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+          <div class="card-body p-0">
+            <div class="row g-0">
+              <div class="col-lg-12">
+                <div class="p-5">
+                  <div class="d-flex justify-content-between align-items-center mb-5">
+                    <h1 class="fw-bold mb-0 text-black"><%= t("orders_management") %></h1>
+                  </div>
+                  <hr class="my-4">
+
+                  <table class="table table-striped table-hover">
+                    <thead class="bg-light">
+                      <tr class="fs-4">
+                        <th class="px-3 py-4">#</th>
+                        <th class="px-3 py-4"><%= t("customer") %></th>
+                        <th class="px-3 py-4"><%= t("product_quantity") %></th>
+                        <th class="px-3 py-4"><%= t("total_price") %></th>
+                        <th class="px-3 py-4"><%= t("status") %></th>
+                        <th class="px-3 py-4"><%= t("date_time_order") %></th>
+                        <th class="px-3 py-4"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <% @orders.each_with_index do |order, index| %>
+                      <tr class="fs-5">
+                        <td class="px-3 py-5"><%= index + 1 %></td>
+                        <td class="px-3 py-5"><%= order.user.name %></td>
+                        <td class="px-3 py-5 ps-5"><%= order.order_details.length %></td>
+                        <td class="px-3 py-5"><%= order.total_price %></td>
+                        <td class="px-3 py-5 fw-bold text-<%=order.status%>"><%= t("#{order.status}")%></td>
+                        <td class="px-3 py-5"><%= order.created_at %></td>
+                        <td class="px-3 py-5 text-center">
+                          <div class="d-grid gap-2 d-md-block">
+                            <%= link_to order, class: "text-decoration-none" do %>
+                              <button type="button" class="btn btn-lg btn-warning text-white fw-normal text-uppercase"><%= t("details") %></button>
+                            <% end %>
+                            <% if order.awaiting? %>
+                              <%= link_to admin_order_confirm_path(order), data: { "turbo-method": :patch}, class: "text-decoration-none" do %>
+                                <button type="button" class="btn btn-lg btn-primary text-white fw-normal text-uppercase"><%= t("confirm") %></button>
+                              <% end %>
+                              <%= link_to admin_order_cancel_path(order), data: { "turbo-method": :patch}, class: "text-decoration-none" do %>
+                                <button type="button" class="btn btn-lg btn-danger text-white fw-normal text-uppercase"><%= t("cancel") %></button>
+                              <% end %>
+                            <% end %>
+                          </div>
+                        </td>
+                      </tr>
+                    <% end %>
+                    </tbody>
+                    <%== pagy_bootstrap_nav(@pagy) %>
+                  </table>
+                  <%== pagy_bootstrap_nav(@pagy) %>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

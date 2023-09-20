@@ -598,3 +598,13 @@ text-align: center;
   height: 40px;
   font-size: 16px;
 }
+
+.text-awaiting {
+  color: green !important;
+}
+.text-confirmed {
+  color: blue !important;
+}
+.text-canceled {
+  color: red !important;
+}

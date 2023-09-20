@@ -22,11 +22,15 @@
                 </div>
             <% end %>
             <hr>
-            <div class="user-menu-list-item">
-                <%= image_tag("icon/favourite.PNG", :alt => "") %>
-                <span><%= t("saved") %></span>
-            </div>
+            <% if current_user.is_admin %>
+                <%= link_to admin_orders_path, class: "text-decoration-none" do %>
+                    <div class="user-menu-list-item">
+                        <%= image_tag("icon/favourite.PNG", :alt => "") %>
+                        <span><%= t("orders_management") %></span>
+                    </div>
+                <% end %>
             <hr>
+            <% end %>
             <div class="user-menu-list-item">
                 <%= image_tag("icon/logout.PNG", :alt => "") %>
                 <span><%= link_to t("log_out"),logout_path, data: { "turbo-method": :delete } %></span>
