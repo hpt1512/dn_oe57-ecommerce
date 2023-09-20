@@ -8,7 +8,7 @@ class Admin::OrdersController < ApplicationController
   end
 
   def confirm
-    if @order.update(status: :confirmed)
+    if @order.confirmed!
       UserMailer.confirm_order(@order).deliver_now
       redirect_to admin_orders_path, notice: t("order_has_been_confirmed")
     else
@@ -22,7 +22,7 @@ class Admin::OrdersController < ApplicationController
   def cancel
     ActiveRecord::Base.transaction do
       if params[:reason].present?
-        @order.update(status: :canceled)
+        @order.canceled!
         return_quantity_products @order
         UserMailer.cancel_order(@order, params[:reason]).deliver_now
         redirect_to admin_orders_path, notice: t("order_has_been_cancelled")
@@ -50,6 +50,15 @@ class Admin::OrdersController < ApplicationController
 
     flash[:danger] = t("order_not_found")
     redirect_to root_url
+  end
+
+  def return_quantity_products order
+    @order_details = order.order_details
+
+    @order_details.each do |order_detail|
+      order_detail.product.quantity += order_detail.quantity_product
+      order_detail.product.save!
+    end
   end
 
   def check_status

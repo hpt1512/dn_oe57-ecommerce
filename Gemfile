@@ -59,8 +59,6 @@ gem "faker"
 
 gem "config"
 
-gem "ransack"
-
 # Gem pagy
 gem "pagy"
 

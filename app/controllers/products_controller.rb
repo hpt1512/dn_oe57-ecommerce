@@ -1,8 +1,15 @@
 class ProductsController < ApplicationController
   before_action :load_info_categories, only: %i(show index)
   before_action :load_product, only: %i(show)
+  before_action :admin_user, :load_category, only: %i(new create)
 
-  def show; end
+  def show
+    @feedbacks = @product.feedbacks.newest
+  end
+
+  def new
+    @product = Product.new
+  end
 
   def index
     if params[:name].present?
@@ -17,6 +24,11 @@ class ProductsController < ApplicationController
   end
 
   private
+
+  def product_params
+    params.require(:product).permit(:name, :price,
+                                    :description, :quantity, :rating, :image)
+  end
 
   def search_by_name
     search_results = Product.search_by_name(params[:name])
@@ -52,5 +64,17 @@ class ProductsController < ApplicationController
 
     flash[:danger] = t("product_not_found")
     redirect_to root_url
+  end
+
+  def admin_user
+    return if current_user&.is_admin?
+
+    redirect_to root_path
+    flash[:alert] = t("not_permission")
+  end
+
+  def load_category
+    category_search = Category.search_by_name(params[:name])
+    @category = Category.find_id(category_search.pluck(:id))
   end
 end
