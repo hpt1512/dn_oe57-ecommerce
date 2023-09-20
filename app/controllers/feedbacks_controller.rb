@@ -15,11 +15,10 @@ class FeedbacksController < ApplicationController
         content: params[:feedback][:content],
         rating: params[:feedback][:rating]
       )
-      byebug
       @feedback.save!
       update_rating_product @product
       flash[:success] = t("success")
-      redirect_to root_path
+      redirect_to @product
     end
   rescue ActiveRecord::RecordInvalid
     render :new, status: :unprocessable_entity

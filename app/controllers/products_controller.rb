@@ -2,7 +2,9 @@ class ProductsController < ApplicationController
   before_action :load_info_categories, only: %i(show index)
   before_action :load_product, only: %i(show)
 
-  def show; end
+  def show
+    @feedbacks = @product.feedbacks.newest
+  end
 
   def index
     if params[:name].present?

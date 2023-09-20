@@ -15,7 +15,9 @@ Rails.application.routes.draw do
   get "decrease_to_cart", to: "cart#decrease_quantity_cart"
   get "remove_to_cart", to: "cart#remove_to_cart"
 
-  resources :orders
+  resources :orders do
+    patch "cancel", to: "orders#cancel"
+  end
 
   resources :feedbacks
 

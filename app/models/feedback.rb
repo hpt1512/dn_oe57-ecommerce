@@ -7,7 +7,11 @@ class Feedback < ApplicationRecord
 
   validates :rating, presence: true
 
+  delegate :name, to: :user, prefix: true
+
   scope :filter_by_product_id, lambda {|product_id|
     where(product_id:)
   }
+
+  scope :newest, ->{order created_at: :desc}
 end

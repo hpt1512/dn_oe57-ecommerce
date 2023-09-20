@@ -15,6 +15,7 @@ class CartController < ApplicationController
     session[:cart][@product.id.to_s] ||= 0
     session[:cart][@product.id.to_s] += 1
     respond_to do |format|
+      flash[:success] = t("add_to_cart_noti") + " #{view_context.link_to(t("shopping_cart"), cart_index_path)}"
       format.html{redirect_to @product}
       format.js
     end
