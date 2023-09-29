@@ -15,7 +15,9 @@ Rails.application.routes.draw do
   get "decrease_to_cart", to: "cart#decrease_quantity_cart"
   get "remove_to_cart", to: "cart#remove_to_cart"
 
-  resources :orders
+  resources :orders do
+    patch "cancel", to: "orders#cancel"
+  end
 
   namespace :admin do
     resources :orders, only: :index do
@@ -23,5 +25,16 @@ Rails.application.routes.draw do
       patch "cancel", to: "orders#cancel"
       get "reason", to: "orders#reason"
     end
+  end
+  resources :feedbacks
+
+  namespace :admin do
+    resources :orders, only: :index do
+      patch "confirm", to: "orders#confirm"
+      patch "cancel", to: "orders#cancel"
+      get "reason", to: "orders#reason"
+    end
+
+    resources :products
   end
 end

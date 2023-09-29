@@ -29,12 +29,18 @@
                       </div>
                       <div class="home-product-item__action">
                         <div class="home-product-item__rating">
+                        <% if product.rating > 0 %>
                           <% for i in (1..product.rating) do %>
                             <i class="home-product-item__star--gold fas fa-star"></i>
                           <% end %>
                           <% for i in (1..(5 - product.rating)) do %>
                             <i class="home-product-item__star fas fa-star"></i>
                           <% end %>
+                        <% else %>
+                          <% for i in (1..5 ) do %>
+                            <i class="home-product-item__star fas fa-star"></i>
+                          <% end %>
+                        <% end %>
                         </div>
                       </div>
                     </div>
@@ -42,7 +48,7 @@
               </div>
             <% end %>
           </div>
-          <%== pagy_bootstrap_nav(@pagy) %>
+            <%== pagy_bootstrap_nav(@pagy) %>
         </div>
       </div>
     </div>

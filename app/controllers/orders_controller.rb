@@ -3,10 +3,11 @@ class OrdersController < ApplicationController
 
   before_action :logged_in_user
   before_action :load_product_in_cart, :total_price, only: :create
-  before_action :load_order, only: :show
+  before_action :load_order, only: %i(show cancel)
+  before_action :correct_user, only: :cancel
 
   def index
-    @orders = current_user.orders.includes(:order_details)
+    @orders = current_user.orders.includes(:order_details).newest
   end
 
   def show; end
@@ -26,6 +27,17 @@ class OrdersController < ApplicationController
     render "cart/index", status: :unprocessable_entity
   end
 
+  def cancel
+    ActiveRecord::Base.transaction do
+      @order.canceled!
+      return_quantity_products @order
+      redirect_to orders_path, notice: t("order_has_been_cancelled")
+    end
+  rescue ActiveRecord::RecordInvalid
+    flash[:notice] = t("error")
+    render "orders/index", status: :unprocessable_entity
+  end
+
   private
 
   def clear_cart
@@ -33,14 +45,18 @@ class OrdersController < ApplicationController
   end
 
   def order_params
-    params.require(:order).permit :reciver_name,
-                                  :reciver_address,
-                                  :reciver_phone,
-                                  :total_price, :status
+    extracted_params = params.require(:order).permit(
+      :reciver_name,
+      :reciver_address,
+      :reciver_phone,
+      :status
+    )
+    extracted_params[:total_price] = @total_price
+    extracted_params
   end
 
   def load_order
-    @order = Order.includes(:order_details).find_by id: params[:id]
+    @order = Order.includes(:order_details).find_by id: params[:id] || params[:order_id]
     return if @order
 
     flash[:danger] = t("order_not_found")
@@ -78,5 +94,22 @@ class OrdersController < ApplicationController
       product.quantity = product.quantity - session[:cart][product.id.to_s]
     end
     @products.each(&:save!)
+  end
+
+  def return_quantity_products order
+    @order_details = order.order_details
+
+    @order_details.each do |order_detail|
+      order_detail.product.quantity += order_detail.quantity_product
+      order_detail.product.save!
+    end
+  end
+
+  def correct_user
+    @order = current_user.orders.find_by id: params[:order_id]
+    return if @order
+
+    flash[:danger] = t("order_invalid")
+    redirect_to request.referer || root_url
   end
 end
