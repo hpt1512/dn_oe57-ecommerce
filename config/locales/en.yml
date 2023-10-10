@@ -89,3 +89,4 @@ en:
   out_of_stock: "This product is temporarily out of stock"
   no_order_selected: "No order selected."
   update_order_success: "Updated order success"
+  access_denied: "You are not authorized to access this page."

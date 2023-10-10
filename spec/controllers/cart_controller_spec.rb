@@ -31,18 +31,12 @@ RSpec.describe CartController, type: :controller do
       end
     end
 
-    context "When user login not yet" do
+    context "When user not logged in" do
       before do
         get :index
       end
 
-      it "message please log in" do
-        expect(flash[:danger]) == (I18n.t("please_log_in"))
-      end
-
-      it "redirect log in template" do
-        expect(response).to redirect_to(login_url)
-      end
+      include_examples 'user_not_login'
     end
 
   end
@@ -101,18 +95,12 @@ RSpec.describe CartController, type: :controller do
       end
     end
 
-    context "When user login not yet" do
+    context "When user not logged in" do
       before do
         get :add_to_cart, params: params
       end
 
-      it "message please log in" do
-        expect(flash[:danger]) == (I18n.t("please_log_in"))
-      end
-
-      it "redirect log in template" do
-        expect(response).to redirect_to(login_url)
-      end
+      include_examples 'user_not_login'
     end
   end
 
@@ -157,18 +145,12 @@ RSpec.describe CartController, type: :controller do
       end
     end
 
-    context "When user login not yet" do
+    context "When user not logged in" do
       before do
-        get :increase_quantity_cart, params: params
+        get :increase_quantity_cart, params: { id: product1.id }
       end
 
-      it "message please log in" do
-        expect(flash[:danger]) == (I18n.t("please_log_in"))
-      end
-
-      it "redirect log in template" do
-        expect(response).to redirect_to(login_url)
-      end
+      include_examples 'user_not_login'
     end
   end
 
@@ -213,18 +195,12 @@ RSpec.describe CartController, type: :controller do
       end
     end
 
-    context "When user login not yet" do
+    context "When user not logged in" do
       before do
-        get :decrease_quantity_cart, params: params
+        get :decrease_quantity_cart, params: { id: product1.id }
       end
 
-      it "message please log in" do
-        expect(flash[:danger]) == (I18n.t("please_log_in"))
-      end
-
-      it "redirect log in template" do
-        expect(response).to redirect_to(login_url)
-      end
+      include_examples 'user_not_login'
     end
   end
 
@@ -269,19 +245,12 @@ RSpec.describe CartController, type: :controller do
       end
     end
 
-    context "When user login not yet" do
+    context "When user not logged in" do
       before do
-        get :remove_to_cart, params: params
+        get :remove_to_cart, params: { id: product1.id }
       end
 
-      it "message please log in" do
-        expect(flash[:danger]) == (I18n.t("please_log_in"))
-      end
-
-      it "redirect log in template" do
-        expect(response).to redirect_to(login_url)
-      end
+      include_examples 'user_not_login'
     end
   end
-
 end

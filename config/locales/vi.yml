@@ -86,3 +86,4 @@ vi:
   edit: "Sửa"
   no_order_selected: "Không có đơn hàng nào được chọn."
   update_order_success: "Đã cập nhật các đơn hàng thành công."
+  access_denied: "Bạn không có quyền truy cập vào trang này."
